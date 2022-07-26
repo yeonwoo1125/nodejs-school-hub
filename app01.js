@@ -116,3 +116,165 @@ c(crypto.createHash('md5').update('123').digest('hex'));
 c(crypto.createHash('sha512').update('123').digest('hex'));
 c(crypto.createHash('md5').update('123').digest('base64'));*/
 
+//const fs = require('fs');
+/*fs.readFile('./sam.txt').then(d => {
+    c(d);
+    c(d.toString());
+})
+.catch(err=> {
+    throw new Error(err);
+});*/
+
+//동기/비동기 메서드
+/*
+* 매번 순서가 다르게 실행
+* 동기/비동기 - 백그라운드 작업 완료 확인 여부
+* 블록킹/논블록킹 - 함수가 바로 리턴되는지 여부
+* */
+
+//동기식 파일 읽기
+//이전 작업이 완료되어야 다음 작업 진행 가능
+/*c('시작');
+let data = fs.readFileSync('./sam.txt');
+c('1 ',data.toString());
+data = fs.readFileSync('./sam.txt');
+c('2 ',data.toString());
+data = fs.readFileSync('./sam.txt');
+c('3 ',data.toString());
+c('끝');*/
+
+//비동기식 파일 읽기
+//실행될때마다 순서가 다름
+/*c('시작');
+fs.readFile('./sam.txt',(err, data)=>{
+    if(err) throw err;
+    c('1 ',data.toString());
+});
+fs.readFile('./sam.txt',(err, data)=>{
+    if(err) throw err;
+    c('2 ',data.toString());
+});
+fs.readFile('./sam.txt',(err, data)=>{
+    if(err) throw err;
+    c('3 ',data.toString());
+});
+c('끝');*/
+
+//콜백지옥
+/*fs.readFile('./sam.txt',(err, data)=>{
+    if(err) throw err;
+    c('1 ',data.toString());
+    fs.readFile('./sam.txt',(err, data)=>{
+        if(err) throw err;
+        c('2 ',data.toString());
+        fs.readFile('./sam.txt',(err, data)=>{
+            if(err) throw err;
+            c('3 ',data.toString());
+        });
+    });
+});*/
+
+//콜백지옥 탈출
+//프로미스를 통해 가능
+//실행은 됐지만 결과는 반환 안된 객체
+//then -> 결과 반환, catch -> error 처리, finally -> 무조건 실행
+/*const con = true;
+const promise = new Promise((resolve, reject) => {
+    if (con) resolve('성공');
+    else reject('실패');
+});
+
+promise
+    .then(msg => {
+        c(msg);
+    })
+    .catch(err => {
+        console.error(err);
+    })
+    .finally(() => {
+        c('무조건 실행');
+    });*/
+/*const fs = require('fs').promises;
+c('start');
+fs.readFile('./sam.txt')
+    .then(data => {
+        c('1', data.toString())
+        return fs.readFile('./sam.txt');
+    })
+    .then(data => {
+        c('2', data.toString())
+        return fs.readFile('./sam.txt')
+    })
+    .then(data => {
+        c('3', data.toString())
+    })
+c('end');*/
+
+//이벤트 처리
+/*
+* event 모듈을 사용해 객체를 가져온 후 할당
+* on - 이벤트 이름과 발생시의 콜백을 연결, 여러개의 이벤트 할당 가능
+* addListener - on과 같은 기능
+* emit - 이벤트 호출
+* removeAllListener, removeListener - 이벤트에 연결된 Listener 삭제
+* listenerCount - 현재 연결된 리스너의 개수
+* */
+/*
+
+const EventEmitter = require('events');
+const myEvent = new EventEmitter();
+myEvent.on('event1',()=>{
+    c('이벤트1');
+});
+myEvent.addListener('event2',()=>{
+    c('이벤트2');
+})
+myEvent.addListener('event2',()=>{
+    c('이벤트2 추가');
+})
+myEvent.once('event2',()=>{
+    c('이벤트3');
+})
+myEvent.emit('event1');
+myEvent.emit('event2');
+myEvent.emit('event3');
+myEvent.emit('event3');
+c(myEvent.listenerCount('event1'));
+c(myEvent.listenerCount('event2'));
+myEvent.removeAllListeners('event3');
+c(myEvent.emit('event3'));*/
+
+//에러처리
+/*
+* 처리하지 못한 에러
+* */
+
+/*
+setInterval(()=>{
+    c('start');
+    try{
+        throw new Error('err');
+    }catch (err){
+        console.error(err);
+    }
+},1000)*/
+
+//비동기식 에러처리
+/*const fs = require('fs');
+setInterval(()=>{
+    fs.unlink('./sam1.txt', err=>{
+        if(err) console.error(err);
+    })
+},1000);*/
+
+//예측 불가능한 에러처리
+//에러 내용 기록용
+//최후의 수단
+
+process.on('uncaughtException', err=>{
+    console.error('예기치 못한 에러', err);
+});
+
+setInterval(()=>{
+    throw new Error('에러')
+},1000)
