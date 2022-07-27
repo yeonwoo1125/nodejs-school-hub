@@ -1,0 +1,12 @@
+html
+    head
+        title
+    body
+        h1 Hello Jade
+
+        h2 #{name}
+        h2= desc
+        - for (let i=0; i<10; i++){
+            p #{i}
+                a(href='https://www.e-mirim.hs.kr/main.do') 미림여자정보과학고
+        -}
