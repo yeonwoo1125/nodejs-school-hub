@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            border-style: solid;
+            border-color: black;
+        }
+    </style>
+</head>
+<body>
+<h3>값 넣기</h3>
+<div>
+    <form action="/update/" method="post">
+        <br>
+        아이디 : <input type="text" name="id" value="<%= id%>" readonly><br>
+        이름 : <input type="text" name="name" value="<%= name%>"><br>
+        모델 번호 : <input type="text" name="modelnumber" value="<%= modelnumber%>"><br>
+        시리즈 : <input type="text" name="series" value="<%= series%>"><br><br>
+        <button type="submit">전송</button>
+    </form>
+</div>
+</body>
+</html>

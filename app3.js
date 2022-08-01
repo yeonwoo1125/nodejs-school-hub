@@ -15,6 +15,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const expressErrorHandler = require("express-error-handler");
 
 const app = express();
 const router = express.Router();
@@ -27,14 +28,26 @@ app.use(cookieParser());
 app.set('port', process.env.PORT || 4444);
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+
+app.use('/public',static(path.join(__dirname,'public')));
 app.use(static(path.join(__dirname, 'views')));
 
+const errorHandler = expressErrorHandler({
+    static : {
+        '404' : './public/404error.html'
+    }
+});
+
+app.use(expressErrorHandler.httpError(404));
+app.use(errorHandler);
 app.use(expressSession({
     secret: 'mellong',
     resave: true,
     saveUninitialized: true
-}))
+}));
+
 app.use('/process', router);
+
 router.route('/login').post((req, res) => {
     console.log('/process.login 라우팅 함수 받음');
     const parmaId = req.query.id || req.body.id;
@@ -128,10 +141,6 @@ router.route('/photo').post(upload.array('photo',1), (req, res)=>{
         res.write('<h3>'+fileName+'</h3>');
         res.end();
     }
-});
-
-app.all('*', (req, res) => {
-    res.status(404).send('Page Not Found');
 });
 
 http.createServer(app).listen(app.get('port'), () => {

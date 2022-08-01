@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>mysql list</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            border-style: solid;
+            border-color: black;
+        }
+    </style>
+</head>
+
+<body>
+<h2>
+    list page
+</h2>
+<table>
+    <tr>
+        <th>DELETE</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Modelnumber</th>
+        <th>Series</th>
+    </tr>
+    <% data.forEach(function(item, index){ %>
+    <tr>
+        <td><a href="/delete/<%=item.id%>">delete</a></td>
+        <td><a href="/update/<%=item.id%>"><%=item.id%></a></td>
+        <td> <%=item.name %></td>
+        <td> <%=item.modelnumber %></td>
+        <td> <%=item.series %></td>
+    </tr>
+    <% }) %>
+</table>
+<hr>
+<br>
+<h3>값 넣기</h3>
+<div>
+    <form action="/insert" method="post">
+        <br>
+        이름 : <input type="text" name="name"><br>
+        모델 번호 : <input type="text" name="modelnumber"><br>
+        시리즈 : <input type="text" name="series"><br><br>
+        <button type="submit">전송</button>
+    </form>
+</div>
+
+</body>
+</html>

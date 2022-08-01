@@ -3,10 +3,8 @@ const http = require('http');
 const static = require('serve-static');
 const path = require('path');
 const bodyParser = require("body-parser");
-const fs = require('fs');
 const app = express();
 const router = express.Router();
-const ejs = require('ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -27,22 +25,12 @@ router.route('/memos').post((req, res) => {
     const date = req.body.date;
     const content = req.body.content;
 
-        res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'});
-        res.write('<h1>나의 메모</h1>');
-        res.write('<p>작성자 : '+name+'</p>');
-        res.write('<p>작성일시 : '+date+'</p>');
-        res.write('<p>내용 : '+content+'</p>');
-        res.write('<a href="/"><button type="submit">다시 작성 버튼</button></a>');
-
-    /*fs.readFile('myMemo.ejs', 'utf8', (err, data) => {
-        res.writeHead(200, {'Content-Type': 'text/html'});
-
-        res.end(ejs.render(data, {
-            "name": name,
-            "date": date,
-            "content": content
-        }));
-    });*/
+    res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
+    res.write('<h1>나의 메모</h1>');
+    res.write('<p>작성자 : ' + name + '</p>');
+    res.write('<p>작성일시 : ' + date + '</p>');
+    res.write('<p>내용 : ' + content + '</p>');
+    res.write('<a href="/"><button type="submit">다시 작성 버튼</button></a>');
 });
 
 http.createServer(app).listen(app.get('port'), () => {
