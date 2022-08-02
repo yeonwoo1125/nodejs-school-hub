@@ -21,20 +21,20 @@
 <table>
     <tr>
         <th>DELETE</th>
-        <th>UPDATE</th>
-        <th>ID</th>
+        <th>Id</th>
         <th>Name</th>
-        <th>Modelnumber</th>
-        <th>Series</th>
+        <th>Age</th>
+        <th>Married</th>
+        <th>Created At</th>
     </tr>
     <% data.forEach(function(item, index){ %>
     <tr>
         <td><a href="/delete/<%=item.id%>">delete</a></td>
-        <td><a href="/update/<%=item.id%>">UPDATE</a></td>
-        <td> <%=item.id %></td>
+        <td><a href="/update/<%=item.id%>"><%=item.id %></a></td>
         <td> <%=item.name %></td>
-        <td> <%=item.modelnumber %></td>
-        <td> <%=item.series %></td>
+        <td> <%=item.age %></td>
+        <td> <%=item.married %></td>
+        <td> <%=item.created_at %></td>
     </tr>
     <% }) %>
 </table>
@@ -45,8 +45,8 @@
     <form action="/insert" method="post">
         <br>
         이름 : <input type="text" name="name"><br>
-        모델 번호 : <input type="text" name="modelnumber"><br>
-        시리즈 : <input type="text" name="series"><br><br>
+        나이 : <input type="text" name="age"><br>
+        결혼여부 : <input type="text" name="married"><br><br>
         <button type="submit">전송</button>
     </form>
 </div>

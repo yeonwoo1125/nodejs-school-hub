@@ -17,8 +17,9 @@ const client = mysql.createConnection({
 })
 
 app.get('/', function (req, res) {
-    fs.readFile('views/list.html', 'utf-8', function (err, data) {
-        client.query('select * from products', function (err, results) {
+    fs.readFile('views/personList.html', 'utf-8', function (err, data) {
+        client.query('select * from person', function (err, results) {
+            if(err) console.error(err);
             res.send(ejs.render(data, {
                 data: results
             }));
@@ -27,21 +28,25 @@ app.get('/', function (req, res) {
 });
 
 app.get('/delete/:id', (req, res) => {
-    client.query('delete from products where id=?', [req.params.id], () => {
+    client.query('delete from person where id=?', [req.params.id], (err, results) => {
+        if(err) console.error(err);
         res.redirect('/');
     })
 });
 
 app.post('/insert', (req, res) => {
-    client.query('insert into products(name, modelnumber, series) values(?,?,?);', [req.body.name, req.body.modelnumber, req.body.series], () => {
+
+    client.query('insert into person(name, age, married) values(?,?,?);',
+        [req.body.name, req.body.age, req.body.married], (err, results) => {
+        if(err) console.error(err);
         res.redirect('/');
     })
 });
 
 app.get('/update/:id', (req, res) => {
-    fs.readFile('views/updateForm.html', 'utf-8', (err, data) => {
+    fs.readFile('views/personUpdate.html', 'utf-8', (err, data) => {
         const id = req.params.id*1;
-        client.query('select * from products where id=?',[id], function (err, results) {
+        client.query('select * from person where id=?',[id], function (err, results) {
             if(err) console.error(err);
             res.send(ejs.render(data, {
                 data: results[0]
@@ -53,8 +58,8 @@ app.get('/update/:id', (req, res) => {
 
 app.post('/update/:id', (req, res) => {
     const body = req.body;
-    client.query('update products set name=?, modelnumber=?, series=? where id=?;',
-        [body.name, body.modelnumber, body.series, req.params.id],
+    client.query('update person set name=?, age=?, married=?, created_at=? where id=?;',
+        [body.name, body.age, body.married, body.created_at],
         function (err, results) {
             if (err) console.error(err);
             res.redirect('/')
